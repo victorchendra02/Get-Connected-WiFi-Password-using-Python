@@ -38,19 +38,18 @@ class RetriveConnectedWifiPasswordApp:
     def get_password(name: str) -> str:
         try:
             command = f'netsh wlan show profiles name="{name}" key=clear | findstr Key'
-            output = (
-                subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
-                .decode("utf-8")
-                .strip()
-            )
-
-            if "Key Content" in output:
-                password = output.split(":")[1].strip()
-                # print(f"Password for '{name}': {password}")
-                return password
-            else:
-                # print(f"No password found for '{name}'")
-                return None
+            try:
+                output = (subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode("utf-8").strip())
+            except UnicodeDecodeError:
+                output = (subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, encoding="latin-1").strip())
+            finally:
+                if "Key Content" in output:
+                    password = output.split(":")[1].strip()
+                    # print(f"Password for '{name}': {password}")
+                    return password
+                else:
+                    # print(f"No password found for '{name}'")
+                    return None
 
         except CalledProcessError as e:
             print(f"Error: {e}")
@@ -58,15 +57,18 @@ class RetriveConnectedWifiPasswordApp:
 
     @staticmethod
     def get_all_connected_wifi_profile() -> list[str]:
-        all_wifis = subprocess.check_output(
-            ["netsh", "wlan", "show", "profiles"]
-        ).decode("utf-8")
-        profiles = [
-            line.split(":")[1].strip()
-            for line in all_wifis.split("\n")
-            if "All User Profile" in line
-        ]
-        return profiles
+        command = f"netsh wlan show profiles"
+        try:
+            all_wifis = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode("utf-8")
+        except UnicodeDecodeError:
+            all_wifis = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, encoding="latin-1")
+        finally:                
+            profiles = [
+                line.split(":")[1].strip()
+                for line in all_wifis.split("\n")
+                if "All User Profile" in line
+            ]
+            return profiles
 
     def letsGoButtonEvent(self):
         self.letsGoButton.configure(state="disabled")
