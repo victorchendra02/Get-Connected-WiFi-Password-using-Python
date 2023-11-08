@@ -42,14 +42,14 @@ class RetriveConnectedWifiPasswordApp:
                 output = (subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode("utf-8").strip())
             except UnicodeDecodeError:
                 output = (subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, encoding="latin-1").strip())
-            finally:
-                if "Key Content" in output:
-                    password = output.split(":")[1].strip()
-                    # print(f"Password for '{name}': {password}")
-                    return password
-                else:
-                    # print(f"No password found for '{name}'")
-                    return None
+                
+            if "Key Content" in output:
+                password = output.split(":")[1].strip()
+                # print(f"Password for '{name}': {password}")
+                return password
+            else:
+                # print(f"No password found for '{name}'")
+                return None
 
         except CalledProcessError as e:
             print(f"Error: {e}")
@@ -62,13 +62,16 @@ class RetriveConnectedWifiPasswordApp:
             all_wifis = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode("utf-8")
         except UnicodeDecodeError:
             all_wifis = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, encoding="latin-1")
-        finally:                
-            profiles = [
-                line.split(":")[1].strip()
-                for line in all_wifis.split("\n")
-                if "All User Profile" in line
-            ]
-            return profiles
+        except CalledProcessError as e:
+            print(f"Error: {e}")
+            print(f"Command output: {e.output.decode('utf-8').strip()}")
+
+        profiles = [
+            line.split(":")[1].strip()
+            for line in all_wifis.split("\n")
+            if "All User Profile" in line
+        ]
+        return profiles
 
     def letsGoButtonEvent(self):
         self.letsGoButton.configure(state="disabled")
