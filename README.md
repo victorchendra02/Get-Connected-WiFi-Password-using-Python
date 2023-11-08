@@ -1,5 +1,5 @@
 # Get Connected WiFi Password Application using Python customtkinter
-![Thumbnail1](thumbnail1.jpg)
+![Thumbnail1](assets/thumbnail1.jpg)
 
 
 ## How to run without Python
