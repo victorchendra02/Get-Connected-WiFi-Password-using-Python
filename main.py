@@ -105,7 +105,7 @@ class RetriveConnectedWifiPasswordApp:
                 container,
                 text=f"{(str(i+1) + ' ').rjust(5, ' ')}",
                 font=("Consolas", 11, "bold"),
-                bg_color="#555555",
+                # bg_color="#555555",
             )
             number.pack(side="left", pady=(0, 2), padx=(0, 2))
 
@@ -113,7 +113,7 @@ class RetriveConnectedWifiPasswordApp:
                 container,
                 text=text,
                 font=("Consolas", 11),
-                bg_color="#555555",
+                # bg_color="#555555",
                 width=200,
             )
             label.pack(side="left", pady=(0, 2))
