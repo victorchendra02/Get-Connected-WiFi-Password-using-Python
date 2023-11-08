@@ -12,6 +12,7 @@
 pip install tkinter
 pip install customtkinter
 pip install pyinstaller
+pip install auto-py-to-exe
 ```
 
 ## How to compile `.py` to `.exe`
