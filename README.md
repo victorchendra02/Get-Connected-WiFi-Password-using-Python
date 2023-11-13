@@ -3,8 +3,10 @@
 
 
 ## How to run without Python
-1. Download `Connected Wi-Fi.exe` inside `dist` folder
-2. Run the `Connected Wi-Fi.exe` on your computer
+1. Download this repository to zip
+2. Extract the zip file you've donwloaded
+3. Go to `ouput` --> `Connected Wi-Fi`
+3. Finally, run the `Connected Wi-Fi.exe` on your computer
 
 
 ## Python requirment library
@@ -15,9 +17,8 @@ pip install pyinstaller
 pip install auto-py-to-exe
 ```
 
-## How to compile `.py` to `.exe`
-Make sure to install `pyinstaller` on your pip
 
+## How to compile `.py` to `.exe` (pyinstaller)
 ```bash
 # Compile normal
 pyinstaller main.py
@@ -34,3 +35,5 @@ pyinstaller main.py --onefile --windowed --icon="icons8-wifi-96.ico"
 # Compile into single file, no terminal, set icon app, and set name for the app after compiled
 pyinstaller main.py --onefile --windowed --icon="icons8-wifi-96.ico" --name="Connected Wi-Fi"
 ```
+
+> This project compiled using `auto-py-to-exe`. I recommend to compile any python file using `auto-py-to-exe` than `pyinstaller`.
