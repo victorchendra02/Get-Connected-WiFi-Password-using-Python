@@ -1,5 +1,4 @@
 import subprocess
-import tkinter as tk
 import customtkinter as ctk
 from subprocess import CalledProcessError
 
@@ -42,13 +41,11 @@ class RetriveConnectedWifiPasswordApp:
                 output = (subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT).decode("utf-8").strip())
             except UnicodeDecodeError:
                 output = (subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, encoding="latin-1").strip())
-                
+
             if "Key Content" in output:
                 password = output.split(":")[1].strip()
-                # print(f"Password for '{name}': {password}")
                 return password
             else:
-                # print(f"No password found for '{name}'")
                 return None
 
         except CalledProcessError as e:
@@ -66,6 +63,27 @@ class RetriveConnectedWifiPasswordApp:
             print(f"Error: {e}")
             print(f"Command output: {e.output.decode('utf-8').strip()}")
 
+        """
+        # all_wifis looks like this
+        
+        Profiles on interface Wi-Fi:
+
+        Group policy profiles (read only)
+        ---------------------------------
+            <None>
+
+        User profiles
+        -------------
+            All User Profile     : cencored1
+            All User Profile     : cencored2
+            All User Profile     : cencored3
+            All User Profile     : cencored4
+            All User Profile     : TP-Link_3E16
+            All User Profile     : Redmi Note 9 Pro
+            All User Profile     : TP-LINK_C32E7E
+
+        """
+        
         profiles = [
             line.split(":")[1].strip()
             for line in all_wifis.split("\n")
@@ -92,13 +110,12 @@ class RetriveConnectedWifiPasswordApp:
 
             # write data
             self.data[network] = password
-            
+
             if password == None:
                 password = str(password).lower()
             else:
                 password = "[" + password + "]"
             text = network.rjust(40, " ") + " --> " + password.ljust(40, " ")
-
 
             container = ctk.CTkFrame(self.scrollable)
             if i + 1 == len(all_profiles):
